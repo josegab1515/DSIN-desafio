@@ -1,0 +1,25 @@
+/* Base Imports */
+@import './styles/pixel.css';
+@import './styles/modern.css';
+@import './styles/map.css';
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #07090e;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

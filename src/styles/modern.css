@@ -1,0 +1,63 @@
+/* ==========================================================================
+   F.O.G.O. - MODO MODERNO / HIGH-TECH ENTERPRISE
+   ========================================================================== */
+
+.theme-modern {
+  --font-pixel: 'Inter', -apple-system, sans-serif;
+  --font-arcade: 'Inter', -apple-system, sans-serif;
+  --font-hud: 'Inter', -apple-system, sans-serif;
+  --font-term: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', -apple-system, sans-serif;
+}
+
+.theme-modern .crt-overlay {
+  display: none !important;
+}
+
+.theme-modern .pixel-box {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+
+.theme-modern .pixel-box-glow {
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15), 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-color: #38bdf8;
+  border-radius: 8px;
+}
+
+.theme-modern .pixel-box-alert {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-color: #ef4444;
+  border-radius: 8px;
+}
+
+.theme-modern .pixel-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.15s ease;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.theme-modern .pixel-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.theme-modern .pixel-btn:active {
+  transform: translateY(1px);
+}
+
+.theme-modern .pixel-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  border-radius: 9999px;
+  padding: 3px 10px;
+  text-transform: none;
+  font-weight: 500;
+}

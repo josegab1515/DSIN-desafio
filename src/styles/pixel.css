@@ -1,0 +1,286 @@
+/* ==========================================================================
+   F.O.G.O. - PROTOCOLO PROMETHEUS: PIXEL ART & RETRO CYBER CICC STYLES
+   ========================================================================== */
+
+:root {
+  --px-bg-dark: #07090e;
+  --px-bg-card: #0d121d;
+  --px-bg-card-hover: #151d2e;
+  --px-border: #1e293b;
+  --px-border-bright: #38bdf8;
+  --px-primary: #38bdf8;
+  --px-neon-green: #22c55e;
+  --px-neon-yellow: #eab308;
+  --px-neon-red: #ef4444;
+  --px-neon-purple: #a855f7;
+  --px-neon-orange: #f97316;
+  --px-text-dim: #94a3b8;
+  --px-text-bright: #f8fafc;
+  
+  --font-pixel: 'Silkscreen', 'Press Start 2P', monospace;
+  --font-arcade: 'Press Start 2P', monospace;
+  --font-hud: 'Chakra Petch', sans-serif;
+  --font-term: 'VT323', monospace;
+  --font-body: 'Inter', -apple-system, sans-serif;
+}
+
+/* Reset e Base */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--px-bg-dark);
+  color: var(--px-text-bright);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Efeito CRT Scanlines */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  opacity: 0.7;
+}
+
+/* Molduras Pixel Art com box-shadow recortado */
+.pixel-box {
+  background: var(--px-bg-card);
+  position: relative;
+  border: 2px solid #1e293b;
+  box-shadow: 
+    0 -3px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -3px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    0 -4px 0 0 #334155,
+    0 4px 0 0 #334155,
+    -4px 0 0 0 #334155,
+    4px 0 0 0 #334155;
+  padding: 16px;
+  border-radius: 0px;
+}
+
+.pixel-box-glow {
+  box-shadow: 
+    0 0 15px rgba(56, 189, 248, 0.25),
+    0 -3px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -3px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    0 -4px 0 0 #0284c7,
+    0 4px 0 0 #0284c7,
+    -4px 0 0 0 #0284c7,
+    4px 0 0 0 #0284c7;
+}
+
+.pixel-box-alert {
+  box-shadow: 
+    0 0 15px rgba(239, 68, 68, 0.3),
+    0 -3px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -3px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    0 -4px 0 0 #ef4444,
+    0 4px 0 0 #ef4444,
+    -4px 0 0 0 #ef4444,
+    4px 0 0 0 #ef4444;
+}
+
+/* Botões 8-Bit Táteis */
+.pixel-btn {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 
+    0 -2px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -2px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    inset -2px -2px 0 0 #0369a1,
+    inset 2px 2px 0 0 #38bdf8;
+  transition: transform 0.05s ease;
+  user-select: none;
+}
+
+.pixel-btn:hover {
+  background-color: #0369a1;
+  filter: brightness(1.1);
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 
+    0 -2px 0 0 #07090e,
+    0 1px 0 0 #07090e,
+    -2px 0 0 0 #07090e,
+    1px 0 0 0 #07090e,
+    inset 2px 2px 0 0 #0369a1;
+}
+
+.pixel-btn-secondary {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  box-shadow: 
+    0 -2px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -2px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    inset -2px -2px 0 0 #0f172a,
+    inset 2px 2px 0 0 #334155;
+}
+
+.pixel-btn-danger {
+  background-color: #dc2626;
+  color: #fff;
+  box-shadow: 
+    0 -2px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -2px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    inset -2px -2px 0 0 #991b1b,
+    inset 2px 2px 0 0 #f87171;
+}
+
+.pixel-btn-success {
+  background-color: #16a34a;
+  color: #fff;
+  box-shadow: 
+    0 -2px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -2px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    inset -2px -2px 0 0 #15803d,
+    inset 2px 2px 0 0 #4ade80;
+}
+
+.pixel-btn-warning {
+  background-color: #d97706;
+  color: #fff;
+  box-shadow: 
+    0 -2px 0 0 #07090e,
+    0 3px 0 0 #07090e,
+    -2px 0 0 0 #07090e,
+    3px 0 0 0 #07090e,
+    inset -2px -2px 0 0 #b45309,
+    inset 2px 2px 0 0 #fbbf24;
+}
+
+/* Badges de Status Pixel Art */
+.pixel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  position: relative;
+  font-weight: 700;
+}
+
+.pixel-badge-green {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border-color: #22c55e;
+}
+
+.pixel-badge-yellow {
+  background: rgba(234, 179, 8, 0.15);
+  color: #facc15;
+  border-color: #eab308;
+}
+
+.pixel-badge-red {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: #ef4444;
+}
+
+.pixel-badge-purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border-color: #a855f7;
+}
+
+.pixel-badge-gray {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border-color: #64748b;
+}
+
+/* Tipografia Temática */
+.font-pixel {
+  font-family: var(--font-pixel);
+}
+
+.font-arcade {
+  font-family: var(--font-arcade);
+}
+
+.font-hud {
+  font-family: var(--font-hud);
+}
+
+.font-term {
+  font-family: var(--font-term);
+}
+
+/* Animação de pulso para itens críticos */
+@keyframes pixel-pulse {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.8)); }
+  50% { opacity: 0.4; filter: drop-shadow(0 0 1px rgba(239, 68, 68, 0.3)); }
+}
+
+.pulse-critical {
+  animation: pixel-pulse 1.2s infinite ease-in-out;
+}
+
+/* Custom Scrollbar Retrô */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border: 1px solid #1e293b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
+}
