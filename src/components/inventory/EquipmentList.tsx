@@ -14,7 +14,8 @@ import {
   Trash2,
   Edit,
   Activity,
-  Layers
+  Layers,
+  Video
 } from 'lucide-react';
 
 interface EquipmentListProps {
@@ -23,6 +24,7 @@ interface EquipmentListProps {
   onEditEquipment: (equipment: Equipment) => void;
   onDeleteEquipment: (id: string) => void;
   onAddNew: () => void;
+  onOpen3DViewer?: (equipment: Equipment) => void;
 }
 
 export const EquipmentList: React.FC<EquipmentListProps> = ({
@@ -30,7 +32,8 @@ export const EquipmentList: React.FC<EquipmentListProps> = ({
   onSelectEquipment,
   onEditEquipment,
   onDeleteEquipment,
-  onAddNew
+  onAddNew,
+  onOpen3DViewer
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -271,6 +274,16 @@ export const EquipmentList: React.FC<EquipmentListProps> = ({
                     </td>
                     <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-1">
+                        {onOpen3DViewer && (
+                          <button
+                            type="button"
+                            onClick={() => onOpen3DViewer(eq)}
+                            className="p-1 hover:bg-slate-800 text-cyan-400 hover:text-cyan-300"
+                            title="Visão 3D & Transmissão ao Vivo (CCTV)"
+                          >
+                            <Video size={14} />
+                          </button>
+                        )}
                         <button
                           onClick={() => onSelectEquipment(eq)}
                           className="p-1 hover:bg-slate-800 text-slate-300 hover:text-sky-400"
@@ -338,9 +351,24 @@ export const EquipmentList: React.FC<EquipmentListProps> = ({
 
               <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
                 <PixelBadge type="manutencao" value={eq.necessidadeManutencao} />
-                <span className="font-hud text-[10px] text-slate-400">
-                  {eq.orgaoResponsavel}
-                </span>
+                <div className="flex items-center gap-2">
+                  {onOpen3DViewer && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpen3DViewer(eq);
+                      }}
+                      className="px-2 py-0.5 bg-cyan-950 border border-cyan-500/50 hover:border-cyan-400 text-cyan-300 font-pixel text-[9px] rounded flex items-center gap-1"
+                    >
+                      <Video size={10} />
+                      <span>3D/CCTV</span>
+                    </button>
+                  )}
+                  <span className="font-hud text-[10px] text-slate-400">
+                    {eq.orgaoResponsavel}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

@@ -15,7 +15,8 @@ import {
   Zap,
   Shield,
   Radio,
-  Clock
+  Clock,
+  Video
 } from 'lucide-react';
 
 interface DetailDrawerProps {
@@ -25,6 +26,7 @@ interface DetailDrawerProps {
   onRequestMaintenance?: (eq: Equipment) => void;
   onChangeEquipmentStatus?: (eq: Equipment, newStatus: Equipment['situacao']) => void;
   onOpenEditEquipment?: (eq: Equipment) => void;
+  onOpen3DViewer?: (eq: Equipment) => void;
 }
 
 export const DetailDrawer: React.FC<DetailDrawerProps> = ({
@@ -33,7 +35,8 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
   onClose,
   onRequestMaintenance,
   onChangeEquipmentStatus,
-  onOpenEditEquipment
+  onOpenEditEquipment,
+  onOpen3DViewer
 }) => {
   if (!equipment && !agent) return null;
 
@@ -91,6 +94,18 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
                 Responsável: <strong className="text-slate-200">{equipment.orgaoResponsavel}</strong>
               </p>
             </div>
+
+            {/* 3D Hologram, Live CCTV & Street View Action Button */}
+            {onOpen3DViewer && (
+              <button
+                type="button"
+                onClick={() => onOpen3DViewer(equipment)}
+                className="w-full py-2.5 px-3 bg-gradient-to-r from-cyan-950 via-slate-900 to-cyan-950 border border-cyan-400 hover:border-cyan-300 hover:bg-cyan-900/40 text-cyan-300 hover:text-white font-pixel text-[10px] font-bold rounded shadow-[0_0_15px_rgba(6,182,212,0.35)] flex items-center justify-center gap-2 transition-all transform active:scale-98 cursor-pointer"
+              >
+                <Video size={16} className="text-cyan-400 animate-pulse" />
+                <span>📹 VER VISÃO 3D & TRANSMISSÃO AO VIVO</span>
+              </button>
+            )}
 
             {/* Localização Detalhada */}
             <div className="pixel-box bg-slate-900/60 p-3 space-y-1.5 border-slate-800">

@@ -35,6 +35,7 @@ import { AgentFormModal } from './components/inventory/AgentFormModal';
 import { PredictiveDashboard } from './components/predictive/PredictiveDashboard';
 import { ProtocolDocumentation } from './components/documentation/ProtocolDocumentation';
 import { MissionBriefingModal } from './components/common/MissionBriefingModal';
+import { Equipment3DViewer } from './components/equipment3d/Equipment3DViewer';
 
 const INITIAL_RADIO_LOGS: RadioLog[] = [
   {
@@ -86,6 +87,7 @@ export function App() {
   // Drawer & Modals Selection State
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+  const [equipmentFor3D, setEquipmentFor3D] = useState<Equipment | null>(null);
 
   const [isEquipmentModalOpen, setIsEquipmentModalOpen] = useState(false);
   const [equipmentToEdit, setEquipmentToEdit] = useState<Equipment | null>(null);
@@ -621,6 +623,7 @@ export function App() {
                   setEquipmentToEdit(null);
                   setIsEquipmentModalOpen(true);
                 }}
+                onOpen3DViewer={(eq) => setEquipmentFor3D(eq)}
               />
             ) : (
               <AgentList
@@ -677,6 +680,14 @@ export function App() {
           setSelectedEquipment(null);
           setIsEquipmentModalOpen(true);
         }}
+        onOpen3DViewer={(eq) => setEquipmentFor3D(eq)}
+      />
+
+      {/* 3D Hologram, Live CCTV & Real World Street View Viewer */}
+      <Equipment3DViewer
+        equipment={equipmentFor3D}
+        isOpen={Boolean(equipmentFor3D)}
+        onClose={() => setEquipmentFor3D(null)}
       />
 
       {/* Dispatch Modal (Game Mechanic inspired by Dispatch / 911 Operator) */}
