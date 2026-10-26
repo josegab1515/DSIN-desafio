@@ -32,6 +32,7 @@ interface TopNavigationProps {
   onExportJson: () => void;
   onImportJson: () => void;
   totalAlerts: number;
+  onOpenBriefing?: () => void;
 }
 
 export const TopNavigation: React.FC<TopNavigationProps> = ({
@@ -46,7 +47,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onResetData,
   onExportJson,
   onImportJson,
-  totalAlerts
+  totalAlerts,
+  onOpenBriefing
 }) => {
   return (
     <header className="border-b border-cyan-500/30 bg-slate-950/95 sticky top-0 z-50 backdrop-blur-md px-4 py-3 shadow-[0_4px_25px_rgba(0,0,0,0.7)]">
@@ -144,6 +146,17 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
 
         {/* Global Toolbar */}
         <div className="flex items-center gap-2 flex-wrap justify-end">
+          {/* Mission Briefing Button */}
+          {onOpenBriefing && (
+            <button
+              onClick={onOpenBriefing}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold shadow-[0_0_12px_rgba(249,115,22,0.4)] transition-all hover:scale-105"
+              title="Abrir Guia Operacional do Sistema F.O.G.O."
+            >
+              <span>💡 COMO FUNCIONA</span>
+            </button>
+          )}
+
           {/* Live Telemetry Simulation Indicator */}
           <button
             onClick={onToggleSimulation}

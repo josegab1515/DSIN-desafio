@@ -103,8 +103,8 @@ export const AgentFormModal: React.FC<AgentFormModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-sm">
-      <div className="pixel-box w-full max-w-xl bg-slate-900 border-2 border-sky-500 shadow-[0_0_30px_rgba(56,189,248,0.3)]">
+    <div className="fixed inset-0 z-[3000] flex items-center justify-center p-3 bg-black/85 backdrop-blur-md overflow-y-auto">
+      <div className="pixel-box w-full max-w-xl my-8 bg-slate-900 border-2 border-sky-500 shadow-[0_0_40px_rgba(56,189,248,0.5)]">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2.5">

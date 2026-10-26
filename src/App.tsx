@@ -34,6 +34,7 @@ import { AgentFormModal } from './components/inventory/AgentFormModal';
 
 import { PredictiveDashboard } from './components/predictive/PredictiveDashboard';
 import { ProtocolDocumentation } from './components/documentation/ProtocolDocumentation';
+import { MissionBriefingModal } from './components/common/MissionBriefingModal';
 
 const INITIAL_RADIO_LOGS: RadioLog[] = [
   {
@@ -77,6 +78,7 @@ export function App() {
 
   // Dispatch Game Mechanic State
   const [alertToDispatch, setAlertToDispatch] = useState<IncidentAlert | null>(null);
+  const [isBriefingOpen, setIsBriefingOpen] = useState(false);
 
   // Inventory Sub-tab: 'equipamentos' | 'agentes'
   const [inventorySubTab, setInventorySubTab] = useState<'equipamentos' | 'agentes'>('equipamentos');
@@ -485,6 +487,10 @@ export function App() {
         onExportJson={handleExportJson}
         onImportJson={handleImportJson}
         totalAlerts={unresolvedAlertsCount}
+        onOpenBriefing={() => {
+          setIsBriefingOpen(true);
+          soundService.playClick();
+        }}
       />
 
       {/* Main App Content Body */}
@@ -668,6 +674,7 @@ export function App() {
         onRequestMaintenance={handleRequestMaintenance}
         onOpenEditEquipment={(eq) => {
           setEquipmentToEdit(eq);
+          setSelectedEquipment(null);
           setIsEquipmentModalOpen(true);
         }}
       />
@@ -695,6 +702,17 @@ export function App() {
         onClose={() => setIsAgentModalOpen(false)}
         onSave={handleSaveAgent}
         initialAgent={agentToEdit}
+      />
+
+      {/* Mission Briefing Guide Modal */}
+      <MissionBriefingModal
+        isOpen={isBriefingOpen}
+        onClose={() => setIsBriefingOpen(false)}
+        onNavigateTab={(tab) => {
+          setActiveTab(tab);
+          setIsBriefingOpen(false);
+          soundService.playClick();
+        }}
       />
 
       {/* Footer */}
