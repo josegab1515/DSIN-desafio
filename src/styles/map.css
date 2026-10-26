@@ -1,11 +1,11 @@
 /* ==========================================================================
-   LEAFLET MAP & CUSTOM RETRO RADAR MARKERS
+   LEAFLET MAP & TACTICAL PIXEL RADAR PINS
    ========================================================================== */
 
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #0b111e !important;
+  background-color: #080c14 !important;
   font-family: inherit;
 }
 
@@ -20,11 +20,11 @@
 
 /* Custom Leaflet Popup */
 .leaflet-popup-content-wrapper {
-  background: #0d121d !important;
+  background: #090d16 !important;
   color: #f8fafc !important;
   border: 2px solid #38bdf8 !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
-  border-radius: 2px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8) !important;
+  border-radius: 4px !important;
   padding: 0 !important;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .leaflet-popup-tip {
-  background: #0d121d !important;
+  background: #090d16 !important;
   border: 1px solid #38bdf8 !important;
 }
 
@@ -47,41 +47,55 @@
   color: #ef4444 !important;
 }
 
-/* Custom Marker Pin Container */
-.custom-pixel-marker {
+/* Custom Tactical Pixel Pin on Map */
+.pixel-pin-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease;
+  transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.85));
 }
 
-.custom-pixel-marker:hover {
-  transform: scale(1.25);
-  z-index: 1000 !important;
+.pixel-pin-wrapper:hover {
+  transform: scale(1.35) translateY(-5px);
+  z-index: 2500 !important;
 }
 
-.marker-inner {
-  width: 32px;
-  height: 32px;
-  background: #090d16;
+.pixel-pin-body {
+  width: 36px;
+  height: 36px;
+  background: #070a12;
   border: 2px solid #38bdf8;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   position: relative;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9);
 }
 
-.marker-inner-agent {
-  border-radius: 50%;
-  border-width: 2px;
+.pixel-pin-tail {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #38bdf8;
+  margin-top: -1px;
 }
 
-.marker-status-indicator {
+.pixel-pin-status {
   position: absolute;
   top: -4px;
   right: -4px;
-  width: 9px;
-  height: 9px;
-  border: 1px solid #000;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #070a12;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.pulse-critical {
+  animation: pixel-pulse 1.1s infinite ease-in-out;
 }

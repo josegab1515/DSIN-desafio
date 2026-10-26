@@ -6,6 +6,7 @@ import { Agent } from '../../types/agent';
 import { IncidentAlert } from '../../types/alert';
 import { PixelBadge } from '../common/PixelBadge';
 import { PixelButton } from '../common/PixelButton';
+import { getPixelSvgString } from '../common/PixelIcon';
 import { Maximize2, Layers } from 'lucide-react';
 
 interface OperationsMapProps {
@@ -49,7 +50,7 @@ export const OperationsMap: React.FC<OperationsMapProps> = ({
   // Centro de Marília/SP (sede da DSIN)
   const defaultCenter: [number, number] = [-22.2175, -49.9501];
 
-  // Gerador de ícones HTML customizados para equipamentos
+  // Gerador de pins em Pixel Art detalhados para equipamentos
   const createEquipmentIcon = (eq: Equipment) => {
     let statusColor = '#22c55e'; // verde
     let isPulsing = false;
@@ -67,71 +68,74 @@ export const OperationsMap: React.FC<OperationsMapProps> = ({
       isPulsing = true;
     }
 
+    const spriteSvg = getPixelSvgString(eq.tipo, statusColor, 22);
+
     const html = `
-      <div class="custom-pixel-marker ${isPulsing ? 'pulse-critical' : ''}">
-        <div class="marker-inner" style="border-color: ${statusColor}; box-shadow: 0 0 10px ${statusColor}66;">
-          <div style="width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="${statusColor}">
-              <rect x="4" y="4" width="16" height="16" />
-              <rect x="7" y="7" width="10" height="10" fill="#090d16" />
-              <rect x="10" y="10" width="4" height="4" fill="${statusColor}" />
-            </svg>
-          </div>
-          <div class="marker-status-indicator" style="background-color: ${statusColor};"></div>
+      <div class="pixel-pin-wrapper ${isPulsing ? 'pulse-critical' : ''}">
+        <div class="pixel-pin-body" style="border-color: ${statusColor}; box-shadow: 0 0 12px ${statusColor}66;">
+          ${spriteSvg}
+          <div class="pixel-pin-status" style="background-color: ${statusColor}; color: ${statusColor};"></div>
         </div>
+        <div class="pixel-pin-tail" style="border-top-color: ${statusColor};"></div>
       </div>
     `;
 
     return L.divIcon({
       html,
       className: '',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
-      popupAnchor: [0, -18]
+      iconSize: [36, 42],
+      iconAnchor: [18, 42],
+      popupAnchor: [0, -42]
     });
   };
 
-  // Gerador de ícones HTML para agentes
+  // Gerador de pins em Pixel Art para agentes operacionais
   const createAgentIcon = (ag: Agent) => {
     const isPm = ag.corporacao === 'Polícia Militar';
     const isGm = ag.corporacao === 'Guarda Municipal';
+    const corpIcon = isPm ? 'policia_militar' : isGm ? 'guarda_municipal' : 'agente_transito';
     const corpColor = isPm ? '#38bdf8' : isGm ? '#3b82f6' : '#f59e0b';
 
+    const spriteSvg = getPixelSvgString(corpIcon, corpColor, 22);
+
     const html = `
-      <div class="custom-pixel-marker">
-        <div class="marker-inner marker-inner-agent" style="border-color: ${corpColor}; background-color: #0f172a; box-shadow: 0 0 12px ${corpColor}88;">
-          <div style="font-size: 14px; line-height: 1;">
-            ${isPm ? '👮' : isGm ? '🛡️' : '🚦'}
-          </div>
+      <div class="pixel-pin-wrapper">
+        <div class="pixel-pin-body" style="border-color: ${corpColor}; border-radius: 50%; box-shadow: 0 0 14px ${corpColor}88;">
+          ${spriteSvg}
+          <div class="pixel-pin-status" style="background-color: #22c55e; color: #22c55e;"></div>
         </div>
+        <div class="pixel-pin-tail" style="border-top-color: ${corpColor};"></div>
       </div>
     `;
 
     return L.divIcon({
       html,
       className: '',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
-      popupAnchor: [0, -18]
+      iconSize: [36, 42],
+      iconAnchor: [18, 42],
+      popupAnchor: [0, -42]
     });
   };
 
   // Ícone para incidentes críticos
   const createAlertIcon = (alert: IncidentAlert) => {
+    const spriteSvg = getPixelSvgString('alerta', '#ffffff', 20);
+
     const html = `
-      <div class="custom-pixel-marker pulse-critical">
-        <div style="width: 28px; height: 28px; background: #dc2626; border: 2px solid #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(239,68,68,0.9);">
-          <span style="font-size: 14px;">⚠️</span>
+      <div class="pixel-pin-wrapper pulse-critical">
+        <div class="pixel-pin-body" style="border-color: #ef4444; background: #7f1d1d; box-shadow: 0 0 18px rgba(239,68,68,0.9);">
+          ${spriteSvg}
         </div>
+        <div class="pixel-pin-tail" style="border-top-color: #ef4444;"></div>
       </div>
     `;
 
     return L.divIcon({
       html,
       className: '',
-      iconSize: [28, 28],
-      iconAnchor: [14, 14],
-      popupAnchor: [0, -16]
+      iconSize: [36, 42],
+      iconAnchor: [18, 42],
+      popupAnchor: [0, -42]
     });
   };
 
