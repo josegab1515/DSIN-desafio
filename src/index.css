@@ -1,4 +1,4 @@
-/* Base Imports */
+@import "tailwindcss";
 @import './styles/pixel.css';
 @import './styles/modern.css';
 @import './styles/map.css';

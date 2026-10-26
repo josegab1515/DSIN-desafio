@@ -1,7 +1,6 @@
 import React from 'react';
 import { PixelIcon } from '../common/PixelIcon';
 import { AudioToggle } from '../common/AudioToggle';
-import { PixelButton } from '../common/PixelButton';
 import {
   MapPin,
   ClipboardList,
@@ -13,7 +12,9 @@ import {
   Download,
   Upload,
   Play,
-  Pause
+  Pause,
+  Radio,
+  Flame
 } from 'lucide-react';
 
 export type ActiveTab = 'operacoes' | 'inventario' | 'preditiva' | 'documentacao';
@@ -48,47 +49,57 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   totalAlerts
 }) => {
   return (
-    <header className="border-b-2 border-slate-800 bg-slate-950/95 sticky top-0 z-50 backdrop-blur-md px-3 py-2.5">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-        {/* Logo and System Brand */}
-        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onTabChange('operacoes')}>
-            <div className="p-1.5 bg-slate-900 border border-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.3)]">
-              <PixelIcon type="prometheus_logo" size={28} />
+    <header className="border-b border-cyan-500/30 bg-slate-950/95 sticky top-0 z-50 backdrop-blur-md px-4 py-3 shadow-[0_4px_25px_rgba(0,0,0,0.7)]">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
+        {/* Brand / Logo */}
+        <div className="flex items-center justify-between w-full lg:w-auto gap-4">
+          <div
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={() => onTabChange('operacoes')}
+          >
+            <div className="relative p-2 bg-slate-900 border border-orange-500/60 rounded-md shadow-[0_0_15px_rgba(249,115,22,0.4)] group-hover:border-orange-400 transition-all">
+              <PixelIcon type="prometheus_logo" size={30} />
+              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500"></span>
+              </span>
             </div>
+
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-pixel text-sm md:text-base text-amber-400 font-bold tracking-wider">
+                <span className="font-pixel text-base md:text-lg text-orange-400 font-bold tracking-wider">
                   F.O.G.O.
                 </span>
-                <span className="font-hud text-xs text-slate-400 px-1.5 py-0.5 bg-slate-900 border border-slate-700">
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-orange-950/60 text-orange-300 border border-orange-500/40 rounded">
                   PROTOCOLO PROMETHEUS
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 font-hud tracking-tight hidden sm:block">
-                Ferramenta Onisciente de Gestão e Operações Urbanas
+              <p className="text-[11px] text-slate-400 font-sans tracking-tight">
+                Ferramenta Onisciente de Gestão e Operações • Marília/SP
               </p>
             </div>
           </div>
 
-          {/* Quick Simulation Indicator on mobile */}
-          <div className="flex items-center gap-2 md:hidden">
+          {/* Quick controls on mobile */}
+          <div className="flex lg:hidden items-center gap-2">
             <AudioToggle />
           </div>
         </div>
 
-        {/* Tab Navigation Navigation */}
-        <nav className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 md:pb-0">
+        {/* Main Navigation Tabs */}
+        <nav className="flex items-center gap-1.5 bg-slate-900/90 p-1 border border-slate-800 rounded-lg overflow-x-auto max-w-full">
           <button
             onClick={() => onTabChange('operacoes')}
-            className={`pixel-btn text-xs py-1.5 px-3 flex items-center gap-1.5 transition-all ${
-              activeTab === 'operacoes' ? 'bg-sky-600 border-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.4)]' : 'pixel-btn-secondary opacity-80'
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-md font-pixel text-[10px] md:text-xs transition-all ${
+              activeTab === 'operacoes'
+                ? 'bg-cyan-600 text-white shadow-[0_0_12px_rgba(6,182,212,0.5)] font-bold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
-            <MapPin size={14} className="text-sky-400" />
-            <span className="font-pixel text-[10px]">2ª PARTE: CENTRAL</span>
+            <MapPin size={15} className={activeTab === 'operacoes' ? 'text-white' : 'text-cyan-400'} />
+            <span>CENTRAL CICC</span>
             {totalAlerts > 0 && (
-              <span className="px-1.5 py-0.2 bg-red-500 text-white text-[9px] font-bold rounded-sm animate-pulse">
+              <span className="px-1.5 py-0.5 bg-red-500 text-white text-[9px] font-bold rounded-full animate-pulse">
                 {totalAlerts}
               </span>
             )}
@@ -96,103 +107,108 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
 
           <button
             onClick={() => onTabChange('inventario')}
-            className={`pixel-btn text-xs py-1.5 px-3 flex items-center gap-1.5 transition-all ${
-              activeTab === 'inventario' ? 'bg-sky-600 border-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.4)]' : 'pixel-btn-secondary opacity-80'
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-md font-pixel text-[10px] md:text-xs transition-all ${
+              activeTab === 'inventario'
+                ? 'bg-emerald-600 text-white shadow-[0_0_12px_rgba(16,185,129,0.5)] font-bold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
-            <ClipboardList size={14} className="text-emerald-400" />
-            <span className="font-pixel text-[10px]">1ª PARTE: INVENTÁRIO</span>
+            <ClipboardList size={15} className={activeTab === 'inventario' ? 'text-white' : 'text-emerald-400'} />
+            <span>INVENTÁRIO IoT</span>
           </button>
 
           <button
             onClick={() => onTabChange('preditiva')}
-            className={`pixel-btn text-xs py-1.5 px-3 flex items-center gap-1.5 transition-all ${
-              activeTab === 'preditiva' ? 'bg-sky-600 border-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.4)]' : 'pixel-btn-secondary opacity-80'
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-md font-pixel text-[10px] md:text-xs transition-all ${
+              activeTab === 'preditiva'
+                ? 'bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.5)] font-bold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
-            <Cpu size={14} className="text-purple-400" />
-            <span className="font-pixel text-[10px]">3ª PARTE: PREDITIVA</span>
+            <Cpu size={15} className={activeTab === 'preditiva' ? 'text-white' : 'text-purple-400'} />
+            <span>CIDADE PREDITIVA</span>
           </button>
 
           <button
             onClick={() => onTabChange('documentacao')}
-            className={`pixel-btn text-xs py-1.5 px-3 flex items-center gap-1.5 transition-all ${
-              activeTab === 'documentacao' ? 'bg-amber-600 border-amber-400' : 'pixel-btn-secondary opacity-80'
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-md font-pixel text-[10px] md:text-xs transition-all ${
+              activeTab === 'documentacao'
+                ? 'bg-amber-600 text-white shadow-[0_0_12px_rgba(245,158,11,0.5)] font-bold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
-            <BookOpen size={14} className="text-amber-400" />
-            <span className="font-pixel text-[10px]">MANUAL / IA</span>
+            <BookOpen size={15} className={activeTab === 'documentacao' ? 'text-white' : 'text-amber-400'} />
+            <span>MANUAL / IA</span>
           </button>
         </nav>
 
-        {/* Global Controls & Theme Toggles */}
+        {/* Global Toolbar */}
         <div className="flex items-center gap-2 flex-wrap justify-end">
-          {/* Simulation Toggle */}
+          {/* Live Telemetry Simulation Indicator */}
           <button
             onClick={onToggleSimulation}
-            className={`pixel-btn text-xs py-1 px-2.5 flex items-center gap-1.5 ${
-              simulationRunning ? 'pixel-btn-success' : 'pixel-btn-warning'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono border transition-all ${
+              simulationRunning
+                ? 'bg-emerald-950/60 border-emerald-500/50 text-emerald-300 hover:bg-emerald-900/60'
+                : 'bg-amber-950/60 border-amber-500/50 text-amber-300 hover:bg-amber-900/60'
             }`}
-            title="Alternar simulação em tempo real de tráfego e patrulhas"
+            title="Alternar simulação em tempo real"
           >
-            {simulationRunning ? <Pause size={13} /> : <Play size={13} />}
-            <span className="font-pixel text-[9px]">
-              {simulationRunning ? 'SIMULAÇÃO: ON' : 'SIMULAÇÃO: OFF'}
-            </span>
+            <span className={`w-2 h-2 rounded-full ${simulationRunning ? 'bg-emerald-400 animate-ping' : 'bg-amber-400'}`} />
+            <span className="font-semibold">{simulationRunning ? 'SIMULAÇÃO VIVA' : 'PAUSADO'}</span>
           </button>
 
-          {/* Theme Switch */}
+          {/* Theme Mode Switch */}
           <button
             onClick={onToggleTheme}
-            className="pixel-btn pixel-btn-secondary text-xs py-1 px-2.5 flex items-center gap-1.5"
-            title="Alternar entre Design Pixel Art Retrô e Design Moderno Corporativo"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-200 transition-all"
+            title="Alternar entre Design Retro Arcade e Clean High-Tech"
           >
             <Sparkles size={13} className="text-amber-400" />
-            <span className="font-pixel text-[9px]">
-              {themeMode === 'pixel' ? '🕹️ RETRÔ' : '👔 CLEAN'}
-            </span>
+            <span>{themeMode === 'pixel' ? '🕹️ MODO RETRÔ' : '👔 MODO CLEAN'}</span>
           </button>
 
-          {/* CRT Switch (Visible in pixel mode) */}
+          {/* CRT toggle */}
           {themeMode === 'pixel' && (
             <button
               onClick={onToggleCrt}
-              className={`pixel-btn text-xs py-1 px-2 flex items-center gap-1 ${
-                crtEnabled ? 'bg-indigo-900 border-indigo-500' : 'pixel-btn-secondary'
+              className={`px-2 py-1.5 rounded text-xs font-mono border transition-all ${
+                crtEnabled
+                  ? 'bg-indigo-950 border-indigo-500 text-indigo-300'
+                  : 'bg-slate-900 border-slate-700 text-slate-400'
               }`}
-              title="Ativar/Desativar efeito de monitor CRT retro"
+              title="Alternar efeito CRT de monitor"
             >
-              <Monitor size={13} />
-              <span className="font-pixel text-[9px]">CRT</span>
+              <Monitor size={14} />
             </button>
           )}
 
-          <div className="hidden md:flex items-center gap-1.5">
+          <div className="hidden lg:flex items-center">
             <AudioToggle />
           </div>
 
-          {/* Backup / Restore Menu */}
-          <div className="flex items-center gap-1">
+          {/* Data Actions */}
+          <div className="flex items-center gap-1 bg-slate-900 p-1 border border-slate-800 rounded">
             <button
               onClick={onExportJson}
-              className="p-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded"
-              title="Exportar base completa em JSON"
+              className="p-1.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition-colors"
+              title="Exportar base em JSON"
             >
-              <Download size={13} />
+              <Download size={14} />
             </button>
             <button
               onClick={onImportJson}
-              className="p-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded"
-              title="Importar base de dados JSON"
+              className="p-1.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition-colors"
+              title="Importar base JSON"
             >
-              <Upload size={13} />
+              <Upload size={14} />
             </button>
             <button
               onClick={onResetData}
-              className="p-1.5 bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-800 text-slate-400 hover:text-red-400 rounded"
-              title="Restaurar dados de fábrica (Demo Marília/SP)"
+              className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded transition-colors"
+              title="Restaurar dados padrão de Marília/SP"
             >
-              <RotateCcw size={13} />
+              <RotateCcw size={14} />
             </button>
           </div>
         </div>

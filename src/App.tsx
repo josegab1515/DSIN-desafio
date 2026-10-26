@@ -344,6 +344,7 @@ export function App() {
         onChange={handleFileChange}
         accept=".json"
         className="hidden"
+        style={{ display: 'none' }}
       />
 
       {/* Top Header Navigation Bar */}
