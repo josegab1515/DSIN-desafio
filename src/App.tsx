@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Equipment } from './types/equipment';
 import { Agent } from './types/agent';
 import { IncidentAlert } from './types/alert';
+import { RadioLog } from './types/dispatch';
 import {
   DistrictRisk,
   HourlyRiskPrediction,
@@ -23,6 +24,8 @@ import { FilterBar } from './components/operations/FilterBar';
 import { AlertFeed } from './components/operations/AlertFeed';
 import { DistrictHealth } from './components/operations/DistrictHealth';
 import { DetailDrawer } from './components/operations/DetailDrawer';
+import { DispatchModal } from './components/operations/DispatchModal';
+import { RadioLogTerminal } from './components/operations/RadioLogTerminal';
 
 import { EquipmentList } from './components/inventory/EquipmentList';
 import { EquipmentFormModal } from './components/inventory/EquipmentFormModal';
@@ -31,6 +34,33 @@ import { AgentFormModal } from './components/inventory/AgentFormModal';
 
 import { PredictiveDashboard } from './components/predictive/PredictiveDashboard';
 import { ProtocolDocumentation } from './components/documentation/ProtocolDocumentation';
+
+const INITIAL_RADIO_LOGS: RadioLog[] = [
+  {
+    id: 'RAD-1',
+    timestamp: '09:55:10',
+    origem: 'COPOM CENTRAL',
+    callsign: 'COPOM-MARÍLIA',
+    mensagem: 'Todas as viaturas e agentes em escuta. Canal unificado CICC PROMETHEUS aberto em QAP.',
+    tipo: 'patrulha'
+  },
+  {
+    id: 'RAD-2',
+    timestamp: '09:56:45',
+    origem: 'VTR-GM-04',
+    callsign: 'TATICO-GM',
+    mensagem: 'Viatura 04 em ronda ostensiva pela Av. Sampaio Vidal. Tráfego comercial moderado.',
+    tipo: 'patrulha'
+  },
+  {
+    id: 'RAD-3',
+    timestamp: '09:58:20',
+    origem: 'PROMETHEUS CORE',
+    callsign: 'PROMETHEUS-AI',
+    mensagem: 'Alerta preditivo: probabilidade de 89% de retenção na Av. Tiradentes no início da tarde.',
+    tipo: 'predicao'
+  }
+];
 
 export function App() {
   // Theme and UI States
@@ -43,6 +73,10 @@ export function App() {
   const [equipments, setEquipments] = useState<Equipment[]>(() => StorageService.getEquipments());
   const [agents, setAgents] = useState<Agent[]>(() => StorageService.getAgents());
   const [alerts, setAlerts] = useState<IncidentAlert[]>(() => StorageService.getAlerts());
+  const [radioLogs, setRadioLogs] = useState<RadioLog[]>(INITIAL_RADIO_LOGS);
+
+  // Dispatch Game Mechanic State
+  const [alertToDispatch, setAlertToDispatch] = useState<IncidentAlert | null>(null);
 
   // Inventory Sub-tab: 'equipamentos' | 'agentes'
   const [inventorySubTab, setInventorySubTab] = useState<'equipamentos' | 'agentes'>('equipamentos');
@@ -278,6 +312,82 @@ export function App() {
   const handleSimulateIncident = () => {
     const newAlert = telemetrySimulator.triggerRandomIncident(equipments);
     setAlerts((prev) => [newAlert, ...prev]);
+
+    // Transmite alerta na rede de rádio
+    const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setRadioLogs((prev) => [
+      {
+        id: `RAD-${Date.now()}`,
+        timestamp: timeStr,
+        origem: 'DISPATCH CENTRAL',
+        callsign: 'CENTRAL-190',
+        mensagem: `🚨 ATENÇÃO: Nova ocorrência registrada no bairro ${newAlert.bairro} (${newAlert.titulo}). Unidades em alerta!`,
+        tipo: 'alerta'
+      },
+      ...prev.slice(0, 20)
+    ]);
+  };
+
+  // Dispatch Unit Game Mechanic
+  const handleConfirmDispatch = (agentId: string, alertId: string) => {
+    const targetAgent = agents.find((a) => a.id === agentId);
+    const targetAlert = alerts.find((a) => a.id === alertId);
+
+    if (!targetAgent || !targetAlert) return;
+
+    // Atualiza status e posição do agente para as coordenadas do chamado
+    setAgents((prev) =>
+      prev.map((ag) => {
+        if (ag.id === agentId) {
+          return {
+            ...ag,
+            status: 'em_atendimento',
+            localizacaoAtual: {
+              ...ag.localizacaoAtual,
+              lat: targetAlert.lat ? targetAlert.lat + 0.0002 : ag.localizacaoAtual.lat,
+              lng: targetAlert.lng ? targetAlert.lng + 0.0002 : ag.localizacaoAtual.lng,
+              bairro: targetAlert.bairro,
+              ultimaAtualizacao: 'Em deslocamento código 3'
+            }
+          };
+        }
+        return ag;
+      })
+    );
+
+    // Marca o chamado como atendido
+    setAlerts((prev) =>
+      prev.map((al) => (al.id === alertId ? { ...al, resolvido: true, resolvidoPor: targetAgent.nome } : al))
+    );
+
+    // Emite mensagem tática no rádio COPOM
+    const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setRadioLogs((prev) => [
+      {
+        id: `RAD-${Date.now()}`,
+        timestamp: timeStr,
+        origem: 'DESPACHO CENTRAL',
+        callsign: 'DESPACHO-CICC',
+        mensagem: `🚨 [CÓDIGO 3]: Unidade ${targetAgent.equipeViatura || targetAgent.matricula} despachada para ${targetAlert.bairro} (${targetAlert.titulo}). Sirene em ação. QSL!`,
+        tipo: 'despacho'
+      },
+      ...prev.slice(0, 20)
+    ]);
+  };
+
+  const handleSendRadioMessage = (msg: string) => {
+    const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setRadioLogs((prev) => [
+      {
+        id: `RAD-${Date.now()}`,
+        timestamp: timeStr,
+        origem: 'OPERADOR CICC',
+        callsign: 'CENTRAL-01',
+        mensagem: msg,
+        tipo: 'patrulha'
+      },
+      ...prev.slice(0, 20)
+    ]);
   };
 
   const handleFocusAlertOnMap = (alert: IncidentAlert) => {
@@ -312,13 +422,24 @@ export function App() {
       })
     );
 
-    // Efeito colateral da recomendação
     const rec = recommendations.find((r) => r.id === recId);
     if (rec?.tipoAcao === 'despacho_viatura' && rec.bairroAlvo) {
-      // Mover agentes para o bairro alvo
       setAgents((prev) =>
-        prev.map((ag, i) => (i < 2 ? { ...ag, localizacaoAtual: { ...ag.localizacaoAtual, bairro: rec.bairroAlvo! } } : ag))
+        prev.map((ag, i) => (i < 2 ? { ...ag, status: 'em_patrulha', localizacaoAtual: { ...ag.localizacaoAtual, bairro: rec.bairroAlvo! } } : ag))
       );
+
+      const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      setRadioLogs((prev) => [
+        {
+          id: `RAD-${Date.now()}`,
+          timestamp: timeStr,
+          origem: 'PROMETHEUS CORE',
+          callsign: 'PROMETHEUS-AI',
+          mensagem: `Ordem executada: reforço preventivo de viaturas deslocado para o bairro ${rec.bairroAlvo}.`,
+          tipo: 'predicao'
+        },
+        ...prev.slice(0, 20)
+      ]);
     } else if (rec?.tipoAcao === 'manutencao_preventiva' && rec.equipamentoAlvoId) {
       setEquipments((prev) =>
         prev.map((eq) =>
@@ -403,7 +524,7 @@ export function App() {
 
             {/* Map and Alert Feed Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 space-y-4">
                 <OperationsMap
                   equipments={mapFilteredEquipments}
                   agents={mapFilteredAgents}
@@ -426,6 +547,12 @@ export function App() {
                   showAlerts={showAlerts}
                   highlightMaintenance={highlightMaintenance}
                 />
+
+                {/* Tactical Dispatch Police Radio Terminal */}
+                <RadioLogTerminal
+                  logs={radioLogs}
+                  onSendMessage={handleSendRadioMessage}
+                />
               </div>
 
               <div className="lg:col-span-1">
@@ -434,6 +561,7 @@ export function App() {
                   onResolveAlert={handleResolveAlert}
                   onSimulateIncident={handleSimulateIncident}
                   onFocusAlertOnMap={handleFocusAlertOnMap}
+                  onOpenDispatch={(alert) => setAlertToDispatch(alert)}
                 />
               </div>
             </div>
@@ -542,6 +670,15 @@ export function App() {
           setEquipmentToEdit(eq);
           setIsEquipmentModalOpen(true);
         }}
+      />
+
+      {/* Dispatch Modal (Game Mechanic inspired by Dispatch / 911 Operator) */}
+      <DispatchModal
+        isOpen={Boolean(alertToDispatch)}
+        onClose={() => setAlertToDispatch(null)}
+        alert={alertToDispatch}
+        agents={agents}
+        onConfirmDispatch={handleConfirmDispatch}
       />
 
       {/* Equipment Add/Edit Modal */}
