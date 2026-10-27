@@ -4,13 +4,10 @@ import { PixelBadge } from '../common/PixelBadge';
 import { PixelButton } from '../common/PixelButton';
 import { soundService } from '../../services/soundService';
 import {
-  Bell,
   CheckCircle,
-  AlertTriangle,
   Flame,
-  Radio,
   ExternalLink,
-  Siren
+  AlertTriangle
 } from 'lucide-react';
 
 interface AlertFeedProps {
@@ -18,15 +15,13 @@ interface AlertFeedProps {
   onResolveAlert: (id: string) => void;
   onSimulateIncident: () => void;
   onFocusAlertOnMap: (alert: IncidentAlert) => void;
-  onOpenDispatch?: (alert: IncidentAlert) => void;
 }
 
 export const AlertFeed: React.FC<AlertFeedProps> = ({
   alerts,
   onResolveAlert,
   onSimulateIncident,
-  onFocusAlertOnMap,
-  onOpenDispatch
+  onFocusAlertOnMap
 }) => {
   const unresolvedAlerts = alerts.filter((a) => !a.resolvido);
 
@@ -41,23 +36,23 @@ export const AlertFeed: React.FC<AlertFeedProps> = ({
       <div className="flex items-center justify-between pb-2 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <Flame size={16} className="text-red-400 animate-pulse" />
-          <h3 className="font-pixel text-xs text-red-400">OCORRÊNCIAS & DESPACHO // 190 / 153</h3>
+          <h3 className="font-pixel text-xs text-red-400">ALERTAS & OCORRÊNCIAS // CICC</h3>
         </div>
         <button
           onClick={handleSimulate}
-          className="px-2 py-1 bg-red-600/80 hover:bg-red-500 text-white font-pixel text-[9px] rounded shadow-[0_0_8px_rgba(239,68,68,0.5)] transition-all flex items-center gap-1"
-          title="Disparar novo chamado de emergência para despachar"
+          className="px-2.5 py-1 bg-red-600/80 hover:bg-red-500 text-white font-pixel text-[9px] rounded shadow-[0_0_8px_rgba(239,68,68,0.5)] transition-all flex items-center gap-1 active:scale-95"
+          title="Disparar novo alerta de incidente na cidade"
         >
-          <Siren size={11} />
-          <span>SIMULAR 911</span>
+          <AlertTriangle size={11} />
+          <span>SIMULAR ALERTA</span>
         </button>
       </div>
 
       {/* Feed List */}
-      <div className="space-y-2.5 mt-2.5 overflow-y-auto max-h-[440px] pr-1">
+      <div className="space-y-2.5 mt-2.5 overflow-y-auto max-h-[460px] pr-1">
         {unresolvedAlerts.length === 0 ? (
           <div className="p-6 text-center text-slate-500 font-hud text-xs border border-dashed border-slate-800 rounded">
-            Nenhuma chamada de emergência pendente no momento. Frequência em QAP.
+            Nenhuma ocorrência crítica pendente no momento. Malha urbana operando em estado nominal.
           </div>
         ) : (
           unresolvedAlerts.map((alert) => (
@@ -71,9 +66,6 @@ export const AlertFeed: React.FC<AlertFeedProps> = ({
             >
               <div className="flex items-start justify-between gap-1.5 mb-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="font-mono text-[9px] px-1.5 py-0.2 bg-red-600 text-white font-bold rounded">
-                    CÓDIGO 3
-                  </span>
                   <PixelBadge type="severidade" value={alert.severidade} />
                   <span className="font-mono text-[10px] text-slate-400">
                     {alert.timestamp}
@@ -91,39 +83,29 @@ export const AlertFeed: React.FC<AlertFeedProps> = ({
                 {alert.descricao}
               </p>
 
-              {/* Action Buttons: Dispatch (Game-like), Focus on Map, and Resolve */}
-              <div className="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between text-xs gap-2 flex-wrap">
-                {onOpenDispatch && (
+              {/* Action Buttons: Focar no Mapa & Resolver */}
+              <div className="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between text-xs gap-2">
+                {alert.lat && alert.lng ? (
                   <button
-                    onClick={() => onOpenDispatch(alert)}
-                    className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white font-pixel text-[9px] font-bold rounded flex items-center gap-1.5 shadow-[0_0_8px_rgba(239,68,68,0.5)] transition-all hover:scale-105 active:scale-95"
+                    onClick={() => onFocusAlertOnMap(alert)}
+                    className="px-2.5 py-1 text-[10px] text-sky-400 hover:text-white bg-slate-900 hover:bg-sky-950 border border-sky-600/60 rounded font-pixel flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
+                    title="Focar no mapa"
                   >
-                    <Siren size={12} />
-                    <span>DESPACHAR EQUIPE</span>
+                    <ExternalLink size={12} />
+                    <span>VER NO MAPA</span>
                   </button>
+                ) : (
+                  <span />
                 )}
 
-                <div className="flex items-center gap-1.5 ml-auto">
-                  {alert.lat && alert.lng && (
-                    <button
-                      onClick={() => onFocusAlertOnMap(alert)}
-                      className="px-2 py-1 text-[10px] text-sky-400 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded font-mono flex items-center gap-1 transition-colors"
-                      title="Focar no mapa"
-                    >
-                      <ExternalLink size={11} />
-                      <span>MAPA</span>
-                    </button>
-                  )}
-
-                  <button
-                    onClick={() => onResolveAlert(alert.id)}
-                    className="px-2 py-1 text-[10px] text-emerald-400 hover:text-white bg-slate-900 hover:bg-emerald-950 border border-emerald-600/50 rounded font-mono flex items-center gap-1 transition-colors"
-                    title="Finalizar chamado"
-                  >
-                    <CheckCircle size={11} />
-                    <span>ENCERRAR</span>
-                  </button>
-                </div>
+                <button
+                  onClick={() => onResolveAlert(alert.id)}
+                  className="px-2.5 py-1 text-[10px] text-emerald-400 hover:text-white bg-slate-900 hover:bg-emerald-950 border border-emerald-600/60 rounded font-pixel flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
+                  title="Finalizar ocorrência"
+                >
+                  <CheckCircle size={12} />
+                  <span>RESOLVER</span>
+                </button>
               </div>
             </div>
           ))

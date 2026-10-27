@@ -22,14 +22,29 @@ interface OperationsMapProps {
   showAgents: boolean;
   showAlerts: boolean;
   highlightMaintenance: boolean;
+  focusTarget?: { lat: number; lng: number; key?: string } | null;
 }
 
-// Subcomponente para centralizar o mapa quando um item é selecionado
-const MapRecenter: React.FC<{ lat: number; lng: number }> = ({ lat, lng }) => {
+// Subcomponente robusto para movimentação suave da câmera sem recuo indesejado
+const MapController: React.FC<{
+  focusTarget?: { lat: number; lng: number; key?: string } | null;
+}> = ({ focusTarget }) => {
   const map = useMap();
+  const lastTargetKey = React.useRef<string | null>(null);
+
   React.useEffect(() => {
-    map.setView([lat, lng], 16, { animate: true });
-  }, [lat, lng, map]);
+    if (!focusTarget || focusTarget.lat === undefined || focusTarget.lng === undefined) return;
+
+    const key = focusTarget.key || `${focusTarget.lat},${focusTarget.lng}`;
+    if (lastTargetKey.current === key) return;
+    lastTargetKey.current = key;
+
+    map.flyTo([focusTarget.lat, focusTarget.lng], 16, {
+      animate: true,
+      duration: 1.2
+    });
+  }, [focusTarget, map]);
+
   return null;
 };
 
@@ -45,7 +60,8 @@ export const OperationsMap: React.FC<OperationsMapProps> = ({
   showEquipments,
   showAgents,
   showAlerts,
-  highlightMaintenance
+  highlightMaintenance,
+  focusTarget
 }) => {
   // Centro de Marília/SP (sede da DSIN)
   const defaultCenter: [number, number] = [-22.2175, -49.9501];
@@ -147,19 +163,8 @@ export const OperationsMap: React.FC<OperationsMapProps> = ({
         scrollWheelZoom={true}
         className="w-full h-full"
       >
-        {/* Recenter no elemento selecionado */}
-        {selectedEquipment && (
-          <MapRecenter
-            lat={selectedEquipment.localizacao.lat}
-            lng={selectedEquipment.localizacao.lng}
-          />
-        )}
-        {selectedAgent && (
-          <MapRecenter
-            lat={selectedAgent.localizacaoAtual.lat}
-            lng={selectedAgent.localizacaoAtual.lng}
-          />
-        )}
+        {/* Controlador de Câmera e Centralização Sem Recuo Indesejado */}
+        <MapController focusTarget={focusTarget} />
 
         {/* Camada de mapa OpenStreetMap com filtro temático Dark/Cyber */}
         <TileLayer
