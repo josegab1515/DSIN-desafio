@@ -558,6 +558,9 @@ export function App() {
               }
             }}
             onSelectDistrict={(bairro) => setSelectedDistrict(bairro)}
+            equipments={equipments}
+            agents={agents}
+            alerts={alerts}
           />
         )}
 
