@@ -57,30 +57,36 @@ export const ProtocolDocumentation: React.FC = () => {
         <div className="pixel-box bg-slate-900/70 p-4 border-sky-500/60">
           <h3 className="font-pixel text-xs text-sky-400 mb-2">1ª PARTE: INVENTÁRIO IoT</h3>
           <ul className="space-y-1 text-slate-300 list-disc list-inside text-[11px]">
-            <li>Catalogação completa de 14 tipos de equipamentos e agentes.</li>
+            <li>Catalogação completa de 14 tipos de equipamentos e agentes operacionais.</li>
             <li>Polimorfismo dinâmico: campos específicos por classe (LPR, visão noturna, radares, pesagem WIM).</li>
-            <li>Rastreamento de manutenção preventiva e corretiva com datas.</li>
-            <li>Geocodificação precisa com referência humana ("KM 203", "oposto ao 181").</li>
+            <li>Visor Holográfico 3D interativo com iluminação e rotação em tempo real.</li>
+            <li>CCTV ao vivo simulado (Modos Dia, Visão Noturna IR e Câmera Térmica).</li>
+            <li>Google Street View 360° embutido direto no painel com coordenadas reais de Marília.</li>
+            <li>Rastreamento de manutenção preventiva e corretiva com datas e O.S.</li>
           </ul>
         </div>
 
         <div className="pixel-box bg-slate-900/70 p-4 border-emerald-500/60">
           <h3 className="font-pixel text-xs text-emerald-400 mb-2">2ª PARTE: CENTRAL CICC</h3>
           <ul className="space-y-1 text-slate-300 list-disc list-inside text-[11px]">
-            <li>Mapa dinâmico (Leaflet) com ícones em Pixel Art e halos pulsantes.</li>
-            <li>Simulador de telemetria IoT vivo com micro-deslocamento de viaturas.</li>
-            <li>Painel de saúde operacional consolidado por regiões.</li>
-            <li>Central de alertas com som 8-bit sintetizado via Web Audio API.</li>
+            <li>Mapa dinâmico (Leaflet) calibrado nos cruzamentos semafóricos reais de Marília/SP.</li>
+            <li>Marcadores temáticos em Pixel Art com halos pulsantes e aproximação suave (flyTo).</li>
+            <li>Simulador de telemetria IoT vivo com micro-deslocamento realista de patrulhas.</li>
+            <li>Painel de saúde operacional consolidado por regiões e bairros.</li>
+            <li>Feed de alertas e ocorrências em tempo real com foco no mapa e encerramento.</li>
+            <li>Síntese sonora chiptune 8-bit nativa via Web Audio API.</li>
           </ul>
         </div>
 
         <div className="pixel-box bg-slate-900/70 p-4 border-purple-500/60">
           <h3 className="font-pixel text-xs text-purple-400 mb-2">3ª PARTE: CIDADE PREDITIVA</h3>
           <ul className="space-y-1 text-slate-300 list-disc list-inside text-[11px]">
-            <li>Índice de Risco Urbano (IRU) ponderado e Curva Horária 24h.</li>
-            <li>Previsão de Falhas MTBF com análise térmica de circuitos.</li>
-            <li>Detecção de anomalias estatísticas via Z-Score (&gt;2.5σ).</li>
-            <li>Recomendações prescritivas acionáveis com 1 clique.</li>
+            <li>Simulador de Cenários What-If ("O que acontece amanhã?", impacto de chuva e reforço de viaturas).</li>
+            <li>Mapa de Calor Geográfico/Topológico interativo de Marília com manchas térmicas radiais.</li>
+            <li>Linha do Tempo 24h com animação/autoplay e estimativa de tempo de espera em semáforos.</li>
+            <li>Previsão de Falhas MTBF com Curva RUL de degradação e cálculo de custos evitados.</li>
+            <li>Detecção de anomalias estatísticas com visualização de Curva Normal Gaussiana e Z-Score.</li>
+            <li>Fichas Técnicas dos Modelos (Explainable AI - XAI) e Boletim Executivo para impressão/PDF.</li>
           </ul>
         </div>
       </div>

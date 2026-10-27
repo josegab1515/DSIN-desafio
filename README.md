@@ -27,38 +27,48 @@ O **SISTEMA F.O.G.O.** foi construído com uma identidade visual temática imers
 
 ### 1ª Parte – Inventário Inteligente da Cidade
 - **Catalogação Completa de Ativos IoT:**
-  - Radares de velocidade, avanço de semáforo e conversão proibida.
+  - Radares de velocidade, avanço de semáforo e conversão proibida calibrados em cruzamentos reais de Marília/SP.
   - Câmeras de videomonitoramento com visão noturna, resolução 4K, cor e IA LPR (leitura de placas).
   - Balança rodoviária de pesagem em movimento (WIM - Weigh in Motion) na Rodovia SP-294.
   - Veículos autônomos de fiscalização da Zona Azul e totens de autoatendimento (Pix/Cartão/Solar).
   - Patinetes elétricos compartilhados com cerca virtual (Geofence).
   - Viaturas da Guarda Municipal, viaturas da Polícia Militar, motos dos agentes e drone aéreo RTK.
+- **Visor Holográfico 3D & Telemetria em Tempo Real:**
+  - Modelo 3D interativo com rotação 360°, wireframe e iluminação dinâmica.
+  - **Streaming Simulado de CCTV:** Alternância entre Modo Normal (Dia), Visão Noturna Infravermelha (IR) e Câmera Térmica FLIR.
+  - **Google Street View 360° Embutido:** Visualização real e panorâmica do cruzamento sem sair do painel.
 - **Polimorfismo Dinâmico de Atributos:** Formulário modal reativo que adapta os campos técnicos específicos de acordo com a categoria selecionada.
-- **Rastreamento de Manutenções:** Classificação de necessidade (Nenhuma, Imediata ou Agendada/Periódica) com data limite e histórico de ocorrência.
-- **Cadastro Integrado de Agentes:** Agentes de trânsito, Guardas Municipais e Policiais Militares (matrícula, corporação, canal de rádio, equipe/viatura vinculada e status).
+- **Rastreamento de Manutenções:** Classificação de necessidade (Nenhuma, Imediata ou Agendada/Periódica) com data limite e emissão de O.S.
+- **Cadastro Integrado de Agentes:** Agentes de trânsito, Guardas Municipais e Policiais Militares (matrícula, corporação, canal de rádio, viatura vinculada e status).
 
 ### 2ª Parte – Central de Operações da Cidade (CICC)
 - **Dashboard Integrado com Mapa Interativo (Leaflet):**
   - Marcadores temáticos em Pixel Art para cada tipo de equipamento e agente operacional.
   - Halos de alerta pulsantes para equipamentos furtados ou com manutenção imediata pendente.
+  - Centralização suave por coordenadas (`flyTo`) sem recuo indesejado ou bugs de câmera.
   - Filtros dinâmicos rápidos por tipo de equipamento, situação, bairro/região, órgão responsável e manutenções urgentes.
 - **Indicadores Gerais (KPIs):** Total de dispositivos IoT, % de disponibilidade da rede urbana, equipamentos indisponíveis, agentes em atividade e manutenções imediatas pendentes.
-- **Feed de Ocorrências Críticas:** Alertas em tempo real com severidade, link de localização no mapa e botão de resolução de chamado.
+- **Feed de Ocorrências Críticas:** Alertas em tempo real com severidade, link direto para focar no mapa e botão para resolver a ocorrência.
 - **Saúde Operacional Consolidada:** Matriz por bairros classificando setores em *Normal*, *Atenção* ou *Crítico*, respondendo instantaneamente se algo está acontecendo na cidade agora.
 - **Drawer de Telemetria Técnica:** Clique em qualquer marcador para inspecionar gráficos de temperatura, voltagem, sinal de rede dBm e histórico.
 
 ### 3ª Parte – Cidade Preditiva (O Amanhã da Mobilidade)
-- **Matriz de Risco Urbano (IRU) por Bairro:**
-  - Índice ponderado de 0 a 100% que calcula probabilidade estatística de acidentes e gargalos viários.
+- **Simulador de Cenários Futuristas "What-If":**
+  - O que acontece amanhã? Simulação interativa por horizontes: *Hoje*, *Amanhã (Terça-Feira)*, *Fim de Semana* e *Dia de Pagamento*.
+  - Simulação de impacto climático: *Tempo Seco (1.0x)*, *Chuva Leve (+25%)* e *Tempestade (+55%)*.
+  - Teste de decisão operacional em tempo real: adicione viaturas simuladas em bairros críticos e veja o índice de risco despencar na hora!
+- **Mapa de Calor Geográfico/Topológico Interativo:**
+  - Mini mapa vetorial SVG de Marília com manchas térmicas radiais e gradientes pulsantes nos bairros vulneráveis.
 - **Linha do Tempo Preditiva 24h:**
-  - Curva de projeção horária de fluxo e criticidade (picos previstos entre 07h30-09h e 17h30-19h).
-- **Previsão de Falhas de Hardware (MTBF):**
-  - Algoritmo que antecipa a probabilidade de falha nos próximos 15 dias baseado em ciclos de operação, sobreaquecimento de circuito (>50°C) e degradação de sinal.
-- **Detecção de Anomalias Estatísticas:**
-  - Identificação de comportamentos anormais com desvio padrão Z-Score > 2.5σ.
-- **PROMETHEUS Decision Core (Recomendações Prescritivas):**
-  - Painel com justificativa do cenário previsto, ação sugerida e impacto quantitativo esperado.
-  - Botão interativo **"Executar Ação Sugerida"** com feedback tátil e sonoro.
+  - Curva de projeção horária de fluxo, espera semafórica em segundos e probabilidade de acidentes com modo de reprodução automática (Autoplay).
+- **Previsão de Falhas de Hardware (MTBF & RUL):**
+  - Curva de degradação residual (Remaining Useful Life) ao longo de 5 semanas, alerta de parada iminente e cálculo financeiro de custos evitados (R$ 28.400/mês).
+- **Detecção de Anomalias com Curva Normal de Gauss:**
+  - Gráfico de distribuição normal ilustrando os limites de tolerância ($\pm 2\sigma$) e pontos anômalos detectados ($|Z| > 2.5\sigma$).
+- **Fichas Técnicas dos Modelos (Explainable AI - XAI):**
+  - Modal com documentação transparente de cada algoritmo: alvo previsto, features consideradas, metodologia estatística e benefício prático na decisão.
+- **Boletim Executivo Preditivo para Gabinete:**
+  - Relatório executivo completo formatado para impressão ou exportação em PDF.
 
 ---
 
