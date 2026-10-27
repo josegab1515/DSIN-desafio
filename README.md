@@ -34,8 +34,6 @@ O **SISTEMA F.O.G.O.** foi construído com uma identidade visual temática imers
   - Patinetes elétricos compartilhados com cerca virtual (Geofence).
   - Viaturas da Guarda Municipal, viaturas da Polícia Militar, motos dos agentes e drone aéreo RTK.
 - **Visor Holográfico 3D & Telemetria em Tempo Real:**
-  - Modelo 3D interativo com rotação 360°, wireframe e iluminação dinâmica.
-  - **Streaming Simulado de CCTV:** Alternância entre Modo Normal (Dia), Visão Noturna Infravermelha (IR) e Câmera Térmica FLIR.
   - **Google Street View 360° Embutido:** Visualização real e panorâmica do cruzamento sem sair do painel.
 - **Polimorfismo Dinâmico de Atributos:** Formulário modal reativo que adapta os campos técnicos específicos de acordo com a categoria selecionada.
 - **Rastreamento de Manutenções:** Classificação de necessidade (Nenhuma, Imediata ou Agendada/Periódica) com data limite e emissão de O.S.
@@ -128,4 +126,4 @@ Em estrito cumprimento às instruções do Desafio:
 
 ---
 
-*Desenvolvido com paixão para a DSIN Tecnologia.* 🚀
+*Desenvolvido para o desafio da DSIN Tecnologia.* 🚀
