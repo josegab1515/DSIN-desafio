@@ -34,6 +34,7 @@ export const Equipment3DViewer: React.FC<Equipment3DViewerProps> = ({
 
   const [activeMode, setActiveMode] = useState<'3d' | 'live_feed' | 'street_view'>('live_feed');
   const [visionMode, setVisionMode] = useState<'normal' | 'night_vision' | 'thermal'>('normal');
+  const [streetViewType, setStreetViewType] = useState<'streetview_360' | 'satellite' | 'map'>('streetview_360');
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const [isRotating, setIsRotating] = useState(true);
 
@@ -186,6 +187,43 @@ export const Equipment3DViewer: React.FC<Equipment3DViewerProps> = ({
                 }`}
               >
                 <Flame size={11} /> 🔥 TÉRMICO (FLIR)
+              </button>
+            </div>
+          )}
+
+          {/* Sub-controls for Street View */}
+          {activeMode === 'street_view' && (
+            <div className="flex items-center gap-1.5 bg-slate-900 p-1 rounded border border-slate-800">
+              <span className="text-[10px] font-mono text-slate-400 px-1">MODO REAL:</span>
+              <button
+                onClick={() => setStreetViewType('streetview_360')}
+                className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 transition-all ${
+                  streetViewType === 'streetview_360'
+                    ? 'bg-emerald-950 text-emerald-300 font-bold border border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🚗 360° DIRETO NA TELA
+              </button>
+              <button
+                onClick={() => setStreetViewType('satellite')}
+                className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 transition-all ${
+                  streetViewType === 'satellite'
+                    ? 'bg-blue-950 text-blue-300 font-bold border border-blue-500'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🛰️ SATÉLITE HD
+              </button>
+              <button
+                onClick={() => setStreetViewType('map')}
+                className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 transition-all ${
+                  streetViewType === 'map'
+                    ? 'bg-slate-800 text-sky-300 font-bold border border-sky-500'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🗺️ MAPA
               </button>
             </div>
           )}
@@ -374,53 +412,75 @@ export const Equipment3DViewer: React.FC<Equipment3DViewerProps> = ({
           </div>
         )}
 
-        {/* VIEW 3: STREET VIEW REAL (VIDA REAL) */}
+        {/* VIEW 3: STREET VIEW REAL (VIDA REAL) - DIRETO NA APLICAÇÃO */}
         {activeMode === 'street_view' && (
-          <div className="relative w-full h-[460px] bg-slate-950 rounded-lg overflow-hidden border border-slate-800 flex flex-col justify-between p-4">
-            <div className="space-y-3">
-              <div className="p-3 bg-slate-900 border border-slate-800 rounded flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-sm text-slate-100 flex items-center gap-2">
-                    <MapPin size={16} className="text-emerald-400" />
-                    <span>COORDENADAS REAIS NA CIDADE DE MARÍLIA/SP</span>
-                  </h4>
-                  <p className="text-slate-400 text-xs mt-1">
-                    Endereço de Instalação: <strong>{equipment.localizacao.rua}</strong> • {equipment.localizacao.referencia}
-                  </p>
-                  <p className="text-slate-400 text-xs">
-                    Latitude: <span className="font-mono text-emerald-400">{equipment.localizacao.lat}</span> | Longitude:{' '}
-                    <span className="font-mono text-emerald-400">{equipment.localizacao.lng}</span>
-                  </p>
-                </div>
+          <div className="relative w-full h-[480px] bg-slate-950 rounded-lg overflow-hidden border border-slate-800 flex flex-col justify-between">
+            {/* Top Bar Status & Coords */}
+            <div className="p-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs font-mono">
+              <div className="flex items-center gap-2">
+                <span className="flex h-2.5 w-2.5 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span className="font-pixel text-[10px] text-emerald-400 font-bold">
+                  {streetViewType === 'streetview_360'
+                    ? 'STREET VIEW 360° DIRETO NA TELA'
+                    : streetViewType === 'satellite'
+                    ? 'SATÉLITE ORTOFOTO EM ALTA RESOLUÇÃO'
+                    : 'MAPA CARTOGRÁFICO URBANO'}
+                </span>
+                <span className="text-slate-400 hidden sm:inline">
+                  • {equipment.localizacao.rua} ({equipment.localizacao.bairro})
+                </span>
+              </div>
 
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400 text-[10px] hidden md:inline">
+                  GPS: <strong className="text-emerald-400">{equipment.localizacao.lat.toFixed(5)}, {equipment.localizacao.lng.toFixed(5)}</strong>
+                </span>
                 <a
                   href={streetViewUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-pixel text-[10px] rounded shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center gap-2 transition-all hover:scale-105"
+                  className="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] rounded border border-slate-700 flex items-center gap-1 transition-colors"
+                  title="Abrir em aba externa se preferir"
                 >
-                  <ExternalLink size={14} />
-                  <span>ABRIR STREET VIEW 360°</span>
+                  <ExternalLink size={10} />
+                  <span>Aba Externa</span>
                 </a>
-              </div>
-
-              {/* Embedded Interactive Street View Frame */}
-              <div className="w-full h-72 rounded border border-slate-800 overflow-hidden bg-slate-900 relative">
-                <iframe
-                  title="Real World Street Location"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  allowFullScreen
-                  src={`https://www.google.com/maps?q=${equipment.localizacao.lat},${equipment.localizacao.lng}&hl=pt-BR&z=17&output=embed`}
-                />
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-400 font-mono text-center">
-              Você pode navegar pelo mapa panorâmico acima ou clicar no botão verde para entrar no modo 360° imersivo de rua.
-            </p>
+            {/* Embedded Interactive Frame Direct in Program */}
+            <div className="relative flex-1 w-full bg-black overflow-hidden">
+              <iframe
+                key={`${streetViewType}-${equipment.id}`}
+                title="Direct Real World Street View"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="eager"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                src={
+                  streetViewType === 'streetview_360'
+                    ? `https://maps.google.com/maps?layer=c&cbll=${equipment.localizacao.lat},${equipment.localizacao.lng}&cbp=12,0,0,0,0&output=svembed`
+                    : streetViewType === 'satellite'
+                    ? `https://maps.google.com/maps?q=${equipment.localizacao.lat},${equipment.localizacao.lng}&t=k&z=19&output=embed`
+                    : `https://maps.google.com/maps?q=${equipment.localizacao.lat},${equipment.localizacao.lng}&hl=pt-BR&z=17&output=embed`
+                }
+              />
+
+              {/* Floating Interaction Guide Banner */}
+              <div className="absolute bottom-2 left-2 right-2 pointer-events-none flex items-center justify-between text-[10px] font-mono text-slate-300 bg-slate-950/90 px-3 py-1.5 rounded border border-slate-800 backdrop-blur-sm shadow-lg">
+                <span>
+                  🖱️ <strong>Interação 100% Direta:</strong> Arraste dentro da tela para girar 360° em qualquer direção e clique nas setas de chão para andar pela rua.
+                </span>
+                <span className="text-emerald-400 font-pixel text-[9px] hidden sm:inline">
+                  AO VIVO • SEM SAIR DO APP
+                </span>
+              </div>
+            </div>
           </div>
         )}
 
