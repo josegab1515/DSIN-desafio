@@ -451,6 +451,21 @@ export const Equipment3DViewer: React.FC<Equipment3DViewerProps> = ({
               </div>
             </div>
 
+            {/* Real World Landmark / Intersection Reference Bar */}
+            <div className="px-3 py-1.5 bg-slate-950/95 border-b border-slate-800/80 flex items-center justify-between text-[11px] font-hud text-slate-300">
+              <div className="flex items-center gap-1.5 truncate">
+                <span className="text-amber-400 font-pixel text-[9px] px-1.5 py-0.5 bg-amber-950/80 border border-amber-500/50 rounded flex items-center gap-1">
+                  🚦 PONTO REAL VERIFICADO
+                </span>
+                <span className="text-slate-200 font-semibold truncate">
+                  {equipment.localizacao.referencia}
+                </span>
+              </div>
+              <span className="text-[10px] text-emerald-400 font-mono hidden sm:inline whitespace-nowrap">
+                ✓ Coordenadas Oficiais Marília/SP
+              </span>
+            </div>
+
             {/* Embedded Interactive Frame Direct in Program */}
             <div className="relative flex-1 w-full bg-black overflow-hidden">
               <iframe

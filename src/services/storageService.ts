@@ -4,9 +4,9 @@ import { IncidentAlert } from '../types/alert';
 import { INITIAL_EQUIPMENTS, INITIAL_AGENTS, INITIAL_ALERTS } from '../data/mockData';
 
 const STORAGE_KEYS = {
-  EQUIPMENTS: 'fogo_equipments_v1',
-  AGENTS: 'fogo_agents_v1',
-  ALERTS: 'fogo_alerts_v1',
+  EQUIPMENTS: 'fogo_equipments_v2_real_places',
+  AGENTS: 'fogo_agents_v2_real_places',
+  ALERTS: 'fogo_alerts_v2_real_places',
   THEME_MODE: 'fogo_theme_mode' // 'pixel' | 'modern'
 };
 

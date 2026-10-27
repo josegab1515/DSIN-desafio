@@ -15,9 +15,9 @@ export const INITIAL_EQUIPMENTS: Equipment[] = [
       cidade: 'Marília',
       uf: 'SP',
       rua: 'Av. Sampaio Vidal',
-      referencia: 'Em frente ao nº 450 (Câmara Municipal)',
-      lat: -22.2175,
-      lng: -49.9501
+      referencia: 'Av. Sampaio Vidal, nº 1181 (Próximo à Prefeitura e cruzamento semafórico com Rua Bahia)',
+      lat: -22.21494,
+      lng: -49.94936
     },
     situacao: 'operacional',
     necessidadeManutencao: 'nenhuma',
@@ -50,10 +50,10 @@ export const INITIAL_EQUIPMENTS: Equipment[] = [
       bairro: 'Centro',
       cidade: 'Marília',
       uf: 'SP',
-      rua: 'Rua São Luiz',
-      referencia: 'Esquina com Rua Nove de Julho',
-      lat: -22.2152,
-      lng: -49.9482
+      rua: 'Av. Sampaio Vidal x Rua Nove de Julho',
+      referencia: 'Cruzamento Central com Conjunto Semafórico de 4 Tempos e Câmera LPR',
+      lat: -22.2155,
+      lng: -49.9483
     },
     situacao: 'operacional',
     necessidadeManutencao: 'agendada_periodica',
@@ -87,10 +87,10 @@ export const INITIAL_EQUIPMENTS: Equipment[] = [
       bairro: 'Fragata',
       cidade: 'Marília',
       uf: 'SP',
-      rua: 'Av. Tiradentes',
-      referencia: 'Cruzamento com Av. das Esmeraldas (Rotatória)',
-      lat: -22.2278,
-      lng: -49.9395
+      rua: 'Av. Tiradentes x Rua das Roseiras',
+      referencia: 'Cruzamento Semafórico da Av. Tiradentes (Em frente ao Supermercado Confiança / Mc Donalds)',
+      lat: -22.2226,
+      lng: -49.9378
     },
     situacao: 'mau_funcionamento',
     necessidadeManutencao: 'imediata',
@@ -429,13 +429,13 @@ export const INITIAL_EQUIPMENTS: Equipment[] = [
     modelo: 'NoTurn Forbidden Angle 400',
     localizacao: {
       cep: '17503-010',
-      bairro: 'Centro',
+      bairro: 'Alto Cafezal',
       cidade: 'Marília',
       uf: 'SP',
-      rua: 'Av. Rio Branco',
-      referencia: 'Oposto ao nº 181 (Proibido Retorno à Esquerda)',
-      lat: -22.2198,
-      lng: -49.9535
+      rua: 'Av. Rio Branco x Av. Santo Antônio',
+      referencia: 'Cruzamento semafórico com Av. Santo Antônio (Proibido Retorno / Conversão à Esquerda)',
+      lat: -22.2212,
+      lng: -49.9510
     },
     situacao: 'operacional',
     necessidadeManutencao: 'nenhuma',
@@ -747,10 +747,10 @@ export const INITIAL_ALERTS: IncidentAlert[] = [
     categoria: 'falha_equipamento',
     severidade: 'critico',
     titulo: 'Radar Semafórico Inoperante - Risco de Acidentes',
-    descricao: 'Radar RAD-SEM-3041 na Av. Tiradentes com perda de sincronia de laço indutivo. Semáforo em modo amarelo piscante.',
+    descricao: 'Radar RAD-SEM-3041 na Av. Tiradentes x Rua das Roseiras com perda de sincronia de laço indutivo. Semáforo em modo amarelo piscante.',
     bairro: 'Fragata',
-    lat: -22.2278,
-    lng: -49.9395,
+    lat: -22.2226,
+    lng: -49.9378,
     equipamentoId: 'EQ-003',
     timestamp: 'Há 25 minutos',
     resolvido: false
